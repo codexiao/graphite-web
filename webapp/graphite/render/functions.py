@@ -230,6 +230,7 @@ aggFuncs = {
   'count': safeLen,
   'range': lambda row: safeSubtract(safeMax(row), safeMin(row)),
   'multiply': lambda row: safeMul(*row),
+  'p90': lambda row: _getPercentile(row, 90),
   'last': safeLast,
 }
 
