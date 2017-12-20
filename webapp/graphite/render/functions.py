@@ -230,7 +230,7 @@ aggFuncs = {
   'count': safeLen,
   'range': lambda row: safeSubtract(safeMax(row), safeMin(row)),
   'multiply': lambda row: safeMul(*row),
-  'p90': lambda row: _getPercentile(row, 90),
+  'custpx90': lambda row: _getPercentile(row, 90),
   'last': safeLast,
 }
 
@@ -244,6 +244,10 @@ aggFuncAliases = {
 aggFuncNames = sorted(aggFuncs.keys())
 
 def getAggFunc(func, rawFunc=None):
+  if "custpx" in func:
+    pct = int(re.findall('\d+', func)[0])
+    aggFuncs[func] = lambda row: _getPercentile(row, pct)
+    return aggFuncs[func]
   if func in aggFuncs:
     return aggFuncs[func]
   if func in aggFuncAliases:
